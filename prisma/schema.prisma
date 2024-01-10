@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model AcademicSemster {
+model AcademicSemester {
   id         String    @id @default(uuid())
   year       Int
   title      String
@@ -64,8 +64,8 @@ model Student {
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
-  academicSemster   AcademicSemster @relation(fields: [academicSemsterId], references: [id])
-  academicSemsterId String
+  academicSemester   AcademicSemester @relation(fields: [academicSemesterId], references: [id])
+  academicSemesterId String
 
   acadeicDepartment AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
 

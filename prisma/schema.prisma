@@ -67,7 +67,7 @@ model Student {
   academicSemester   AcademicSemester @relation(fields: [academicSemesterId], references: [id])
   academicSemesterId String
 
-  acadeicDepartment AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
+  academicDepartment AcademicDepartment @relation(fields: [academicDepartmentId], references: [id])
 
   academicFaculty   AcademicFaculty @relation(fields: [academicFacultyId], references: [id])
   academicFacultyId String

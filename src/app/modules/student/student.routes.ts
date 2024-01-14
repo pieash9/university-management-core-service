@@ -6,11 +6,15 @@ import { StudentValidation } from './student.validations';
 const router = express.Router();
 
 router.get('/', StudentController.getAllFromDB);
+
 router.get('/:id', StudentController.getByIdFromDB);
+
 router.post(
   '/',
   validateRequest(StudentValidation.create),
   StudentController.insertIntoDB
 );
+
+router.patch('/:id', StudentController.updateIntoDB);
 
 export const StudentRoutes = router;

@@ -1,17 +1,25 @@
-import { Request, Response } from 'express';
-import httpStatus from 'http-status';
-import catchAsync from '../../../shared/catchAsync';
-import sendResponse from '../../../shared/sendResponse';
-import { OfferedCourseSectionService } from './offeredCourseSection.service';
+import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
+import { OfferedCourseSectionController } from './offeredCourseSection.controller';
+import { OfferedCourseSectionValidation } from './offeredCourseSection.validation';
 
-const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
-  const result = await OfferedCourseSectionService.insertIntoDB(req.body);
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Offered course section created.',
-    data: result,
-  });
-});
+const router = express.Router();
 
-export const OfferedCourseSectionController = { insertIntoDB };
+router.get('/', OfferedCourseSectionController.getAllFromDB);
+router.get('/:id', OfferedCourseSectionController.getByIdFromDB);
+
+router.post(
+  '/',
+  validateRequest(OfferedCourseSectionValidation.create),
+  OfferedCourseSectionController.insertIntoDB
+);
+
+router.patch(
+  '/:id',
+  validateRequest(OfferedCourseSectionValidation.update),
+  OfferedCourseSectionController.updateOneInDB
+);
+
+router.delete('/:id', OfferedCourseSectionController.deleteByIdFromDB);
+
+export const OfferedCourseSectionRoutes = router;

@@ -5,12 +5,21 @@ import { BuildingValidations } from './building.validation';
 
 const router = express.Router();
 
-router.get('/', BuildingController.getAllFromDb);
+router.get('/', BuildingController.getAllFromDB);
+router.get('/:id', BuildingController.getByIdFromDB);
 
 router.post(
   '/',
   validateRequest(BuildingValidations.create),
-  BuildingController.insertIntoDb
+  BuildingController.insertIntoDB
 );
+
+router.patch(
+  '/:id',
+  validateRequest(BuildingValidations.update),
+  BuildingController.updateOneInDB
+);
+
+router.delete('/:id', BuildingController.deleteByIdFromDB);
 
 export const BuildingRoutes = router;

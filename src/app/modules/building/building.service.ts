@@ -6,14 +6,14 @@ import prisma from '../../../shared/prisma';
 import { BuildingSearchAbleFields } from './building.constant';
 import { IBuildingFilterRequest } from './building.interface';
 
-const insertIntoDb = async (data: Building): Promise<Building> => {
+const insertIntoDB = async (data: Building): Promise<Building> => {
   const result = await prisma.building.create({
     data,
   });
   return result;
 };
 
-const getAllFromDb = async (
+const getAllFromDB = async (
   filters: IBuildingFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Building[]>> => {
@@ -55,4 +55,41 @@ const getAllFromDb = async (
   };
 };
 
-export const BuildingService = { insertIntoDb, getAllFromDb };
+const getByIdFromDB = async (id: string): Promise<Building | null> => {
+  const result = await prisma.building.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+const updateOneInDB = async (
+  id: string,
+  payload: Partial<Building>
+): Promise<Building> => {
+  const result = await prisma.building.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+const deleteByIdFromDB = async (id: string): Promise<Building> => {
+  const result = await prisma.building.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+export const BuildingService = {
+  insertIntoDB,
+  getAllFromDB,
+  getByIdFromDB,
+  updateOneInDB,
+  deleteByIdFromDB,
+};

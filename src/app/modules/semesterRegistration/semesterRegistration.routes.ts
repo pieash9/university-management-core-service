@@ -30,4 +30,16 @@ router.patch(
 
 router.delete('/:id', SemesterRegistrationController.deleteByIdFromDB);
 
+router.post(
+  '/enroll-into-course',
+  auth(ENUM_USER_ROLE.STUDENT),
+  SemesterRegistrationController.enrollIntoCourse
+);
+
+router.post(
+  '/withdraw-from-course',
+  auth(ENUM_USER_ROLE.STUDENT),
+  SemesterRegistrationController.withdrewFromCourse
+);
+
 export const SemesterRegistrationRoutes = router;

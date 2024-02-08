@@ -15,6 +15,7 @@ const insertIntoDb = async (
   data: OfferedCourseClassSchedule
 ): Promise<OfferedCourseClassSchedule> => {
   await OfferedClassSchedulesUtils.checkRoomAvailable(data);
+  await OfferedClassSchedulesUtils.checkFacultyAvailable(data);
 
   // existing: 12:30 - 13:30
   // new slot: 12:50 - 13:50

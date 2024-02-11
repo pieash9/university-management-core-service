@@ -312,8 +312,8 @@ model StudentEnrolledCourseMark {
   student                 Student               @relation(fields: [studentId], references: [id])
   studentEnrolledCourseId String
   studentEnrolledCourse   StudentEnrolledCourse @relation(fields: [studentEnrolledCourseId], references: [id])
-  academicSemeserId       String
-  academicSemeser         AcademicSemester      @relation(fields: [academicSemeserId], references: [id])
+  academicSemesterId      String
+  academicSemester        AcademicSemester      @relation(fields: [academicSemesterId], references: [id])
   grade                   String?
   marks                   Int?
   examType                ExamType?             @default(MIDTERM)
@@ -327,8 +327,8 @@ model StudentSemesterPayment {
   updatedAt            DateTime         @updatedAt
   studentId            String
   student              Student          @relation(fields: [studentId], references: [id])
-  academicSemeserId    String
-  academicSemeser      AcademicSemester @relation(fields: [academicSemeserId], references: [id])
+  academicSemesterId   String
+  academicSemester     AcademicSemester @relation(fields: [academicSemesterId], references: [id])
   fullPaymentAmount    Int?             @default(0)
   partialPaymentAmount Int?             @default(0)
   totalDueAmount       Int?             @default(0)

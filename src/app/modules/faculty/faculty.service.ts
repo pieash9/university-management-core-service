@@ -155,10 +155,7 @@ const removeCourses = async (
 };
 
 const myCourses = async (
-  authUser: {
-    userId: string;
-    role: string;
-  },
+  authUser: { userId: string; role: string },
   filter: {
     academicSemesterId?: string | null | undefined;
     courseId?: string | null | undefined;
@@ -170,7 +167,6 @@ const myCourses = async (
         isCurrent: true,
       },
     });
-
     filter.academicSemesterId = currentSemester?.id;
   }
 
@@ -186,7 +182,7 @@ const myCourses = async (
       offeredCourse: {
         semesterRegistration: {
           academicSemester: {
-            id: filter.academicSemesterId,
+            id: filter?.academicSemesterId,
           },
         },
       },
@@ -211,13 +207,11 @@ const myCourses = async (
 
   const courseAndSchedule = offeredCourseSections.reduce(
     (acc: any, obj: any) => {
-      //console.log(obj)
-
       const course = obj.offeredCourse.course;
       const classSchedules = obj.offeredCourseClassSchedules;
 
       const existingCourse = acc.find(
-        (item: any) => item.couse?.id === course?.id
+        (item: any) => item.course.id === course.id
       );
       if (existingCourse) {
         existingCourse.sections.push({
@@ -239,6 +233,7 @@ const myCourses = async (
     },
     []
   );
+
   return courseAndSchedule;
 };
 

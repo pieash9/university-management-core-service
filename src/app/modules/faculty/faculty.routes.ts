@@ -6,6 +6,7 @@ import { FacultyValidation } from './faculty.validations';
 const router = express.Router();
 
 router.get('/', FacultyController.getAllFromDB);
+router.get('/my-courses', FacultyController.myCourses);
 router.get('/:id', FacultyController.getByIdFromDB);
 router.post(
   '/',

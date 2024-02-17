@@ -3,15 +3,35 @@ import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 import prisma from '../../../shared/prisma';
-import { AcademicSemesterSearchableFields } from './academicSemester.constants';
+import {
+  AcademicSemesterSearchableFields,
+  EVENT_ACADEMIC_SEMESTER_CREATED,
+  academicSemesterTitleCodeMapper,
+} from './academicSemester.constants';
 import { IAcademicSemesterFilterRequest } from './academicSemester.interface';
+import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
+import { RedisClient } from '../../../shared/redis';
 
 const insertIntoDb = async (
   academicSemesterData: AcademicSemester
 ): Promise<AcademicSemester> => {
+  if (
+    academicSemesterTitleCodeMapper[academicSemesterData.title] !==
+    academicSemesterData.code
+  ) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Invalid Semester code !');
+  }
   const result = await prisma.academicSemester.create({
     data: academicSemesterData,
   });
+
+  if (result) {
+    await RedisClient.publish(
+      EVENT_ACADEMIC_SEMESTER_CREATED,
+      JSON.stringify(result)
+    );
+  }
   return result;
 };
 
@@ -77,8 +97,32 @@ const getDataById = async (id: string): Promise<AcademicSemester | null> => {
   return result;
 };
 
+const updateOneInDB = async (
+  id: string,
+  payload: Partial<AcademicSemester>
+): Promise<AcademicSemester> => {
+  const result = await prisma.academicSemester.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+const deleteByIdFromDB = async (id: string): Promise<AcademicSemester> => {
+  const result = await prisma.academicSemester.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const AcademicSemesterService = {
   insertIntoDb,
   getAllFromDB,
   getDataById,
+  updateOneInDB,
+  deleteByIdFromDB,
 };

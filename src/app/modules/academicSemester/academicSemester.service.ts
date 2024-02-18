@@ -6,6 +6,7 @@ import prisma from '../../../shared/prisma';
 import {
   AcademicSemesterSearchableFields,
   EVENT_ACADEMIC_SEMESTER_CREATED,
+  EVENT_ACADEMIC_SEMESTER_UPDATED,
   academicSemesterTitleCodeMapper,
 } from './academicSemester.constants';
 import { IAcademicSemesterFilterRequest } from './academicSemester.interface';
@@ -107,6 +108,14 @@ const updateOneInDB = async (
     },
     data: payload,
   });
+
+  if (result) {
+    await RedisClient.publish(
+      EVENT_ACADEMIC_SEMESTER_UPDATED,
+      JSON.stringify(result)
+    );
+  }
+
   return result;
 };
 
